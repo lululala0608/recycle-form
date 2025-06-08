@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><title>後台資料管理</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+<body class="bg-light"><div class="container mt-5">
+<div class="d-flex justify-content-between align-items-center mb-4">
+<h3>申請資料後台</h3><a href="/admin/logout" class="btn btn-outline-danger">登出</a></div>
+<table class="table table-bordered table-striped"><thead>
+<tr><th>#</th><th>車主</th><th>車種</th><th>車牌</th><th>預計回收日</th><th>地點</th><th>電話</th><th>獎勵金</th><th>建立時間</th></tr>
+</thead><tbody>
+{% for r in records %}
+<tr><td>{{ loop.index }}</td><td>{{ r.owner_id }}</td><td>{{ r.vehicle_type }}</td><td>{{ r.plate_number }}</td>
+<td>{{ r.expected_date }}</td><td>{{ r.location }}</td><td>{{ r.phone }}</td><td>{{ r.reward }}</td><td>{{ r.created_at }}</td></tr>
+{% endfor %}
+</tbody></table></div></body></html>
