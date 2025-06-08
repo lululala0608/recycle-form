@@ -30,7 +30,6 @@ def submit():
         if not data:
             return jsonify({"error": "未提供有效的 JSON 資料"}), 400
 
-        # 將日期字串轉換為 datetime.date
         expected_date_obj = None
         if data.get("expected_date"):
             expected_date_obj = datetime.strptime(data["expected_date"], "%Y-%m-%d").date()
@@ -54,6 +53,12 @@ def submit():
 
     except Exception as e:
         return jsonify({"error": f"伺服器錯誤：{str(e)}"}), 500
+
+@app.route('/init-db')
+def init_db():
+    with app.app_context():
+        db.create_all()
+    return "資料表建立完成"
 
 if __name__ == '__main__':
     with app.app_context():
