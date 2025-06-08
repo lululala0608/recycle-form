@@ -32,10 +32,6 @@
           <label class="form-label">預計回收日期：</label>
           <input type="date" class="form-control" name="expected_date" value="2025-06-08" required>
         </div>
-        <div class="mb-3">
-          <label class="form-label">驗證碼：</label>
-          <input type="text" class="form-control" required>
-        </div>
         <button type="button" class="btn btn-primary" onclick="nextStep()">下一步</button>
       </div>
 
@@ -101,9 +97,7 @@
       const data = new FormData(form);
       let html = '';
       for (const [key, value] of data.entries()) {
-        if (key !== 'captcha') {
-          html += `<p><strong>${key}：</strong> ${value}</p>`;
-        }
+        html += `<p><strong>${key}：</strong> ${value}</p>`;
       }
       document.getElementById('summary').innerHTML = html;
     }
