@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -26,19 +25,30 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    data = request.json
-    app_entry = VehicleApplication(
-        owner_id=data['owner_id'],
-        vehicle_type=data['vehicle_type'],
-        plate_number=data['plate_number'],
-        expected_date=data['expected_date'],
-        location=data['location'],
-        phone=data['phone'],
-        reward=data['reward']
-    )
-    db.session.add(app_entry)
-    db.session.commit()
-    return jsonify({"message": "success"}), 200
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "未提供有效的 JSON 資料"}), 400
+
+        app_entry = VehicleApplication(
+            owner_id=data.get("owner_id", ""),
+            vehicle_type=data.get("vehicle_type", ""),
+            plate_number=data.get("plate_number", ""),
+            expected_date=data.get("expected_date", None),
+            location=data.get("location", ""),
+            phone=data.get("phone", ""),
+            reward=data.get("reward", "")
+        )
+
+        if not app_entry.owner_id or not app_entry.plate_number:
+            return jsonify({"error": "身分證字號與車牌號碼為必填"}), 400
+
+        db.session.add(app_entry)
+        db.session.commit()
+        return jsonify({"message": "success"}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"伺服器錯誤：{str(e)}"}), 500
 
 if __name__ == '__main__':
     with app.app_context():
