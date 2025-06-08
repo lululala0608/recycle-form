@@ -30,11 +30,16 @@ def submit():
         if not data:
             return jsonify({"error": "未提供有效的 JSON 資料"}), 400
 
+        # 將日期字串轉換為 datetime.date
+        expected_date_obj = None
+        if data.get("expected_date"):
+            expected_date_obj = datetime.strptime(data["expected_date"], "%Y-%m-%d").date()
+
         app_entry = VehicleApplication(
             owner_id=data.get("owner_id", ""),
             vehicle_type=data.get("vehicle_type", ""),
             plate_number=data.get("plate_number", ""),
-            expected_date=data.get("expected_date", None),
+            expected_date=expected_date_obj,
             location=data.get("location", ""),
             phone=data.get("phone", ""),
             reward=data.get("reward", "")
