@@ -106,13 +106,22 @@
       e.preventDefault();
       const formData = new FormData(e.target);
       const jsonData = Object.fromEntries(formData.entries());
-      const response = await fetch('/submit', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(jsonData)
-      });
-      if (response.ok) alert('申請已送出！');
-      else alert('送出失敗，請稍後再試');
+      try {
+        const response = await fetch('/submit', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(jsonData)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert('申請已送出！');
+        } else {
+          alert('送出失敗：' + (result.error || '請稍後再試'));
+        }
+      } catch (error) {
+        alert('送出失敗：無法連線伺服器');
+      }
     });
 
     showStep(currentStep);
