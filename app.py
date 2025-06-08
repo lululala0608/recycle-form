@@ -22,8 +22,7 @@ class VehicleApplication(db.Model):
 
 @app.route('/')
 def index():
-    with open("index.html", encoding="utf-8") as f:
-        return render_template_string(f.read())
+    return render_template("index.html")
 
 @app.route('/submit', methods=['POST'])
 def submit():
